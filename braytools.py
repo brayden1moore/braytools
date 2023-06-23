@@ -53,7 +53,8 @@ def isrealname(names,lastname=False):
 
 
 def validateemails(emails):
-    '''Checks if email is valid'''
+    '''Iterates through a given list and returns a dict of each list 
+    item and and whether it is a valid email.'''
 
     from email_validator import validate_email, EmailNotValidError
     
@@ -68,8 +69,9 @@ def validateemails(emails):
     return errorDict
 
 
-def validateaddressesGMAP(addList):
-    '''Checks if address is valid using Google Maps API'''
+def validateaddressesGoogle(addList):
+    '''Iterates through a given list and returns a dict of each list 
+    item and whether it is a valid address using Google Maps API'''
 
     import requests
     import json
@@ -103,7 +105,8 @@ def validateaddressesGMAP(addList):
 
 
 def validateaddressesNCOA(fname,lname,address,city,state,zipcode,country):
-    '''Checks if address is valid using NCOA API'''
+    '''Takes lists of address components and generates an
+     official NCOA report using TrueNCOA API'''
 
     import requests
     key = getApiKey('truencoa')
@@ -126,7 +129,9 @@ def validateaddressesNCOA(fname,lname,address,city,state,zipcode,country):
 
 
 def getcoords(addList):
-    '''Gets coordinates from address string'''
+    '''Iterates through a given list and returns a dict of each list 
+    item and its coordinates using Nominatim API'''
+
     import requests
     import urllib.parse
     from tqdm import tqdm
@@ -147,7 +152,8 @@ def getcoords(addList):
 
 
 def namesinemail(emails):
-    '''Finds names in email addresses'''
+    '''Iterates through a given list of emails and returns a dict of each list 
+    item and any names found in it using the Names Dataset'''
 
     foundDict = {}
     for e in emails:
@@ -171,7 +177,7 @@ def namesinemail(emails):
     
 
 def dupes(df):
-    '''Method that searches a dataframe for potential duplicate names 
+    '''Searches a dataframe for potential duplicate names 
     and returns a new dataframe with each names' potential duplicates'''
     
     from IPython.display import clear_output
