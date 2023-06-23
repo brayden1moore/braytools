@@ -1,1 +1,1 @@
-import braytools
+from .braytools import braytools as braytools
