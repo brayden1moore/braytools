@@ -1,13 +1,14 @@
 import pandas as pd
 import numpy as np
+import requests
+import json
 
+from tqdm import tqdm
 from names_dataset import NameDataset
 nd = NameDataset()
 
 def getApiKey(service):
     '''Reads API key from APIKEYS.json file'''
-
-    import json
 
     # read file
     with open('braytools/APIKEYS.json', 'r') as myfile:
@@ -72,9 +73,6 @@ def validateemails(emails):
 def validateaddressesGoogle(addList):
     '''Iterates through a given list and returns a dict of each list 
     item and whether it is a valid address using Google Maps API'''
-
-    import requests
-    import json
 
     key = getApiKey('google')
     url = f'https://addressvalidation.googleapis.com/v1:validateAddress?key={key}'
