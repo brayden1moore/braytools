@@ -10,9 +10,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pandas',
-        'numpy',
-        'json',
-        'requests',
         'urllib',
         'tqdm',
         'names_dataset'
