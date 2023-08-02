@@ -7,7 +7,6 @@ setup(
     author='Brayden Moore',
     author_email='brayden@braydenmoore.com',
     url='https://github.com/brayden1moore/braytools',
-    scripts=['braytools.py'],
     packages=find_packages(),
     install_requires=[
         'pandas',
