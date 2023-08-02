@@ -1,7 +1,4 @@
 pandas
-numpy
-json
-requests
 urllib
 tqdm
 names_dataset
