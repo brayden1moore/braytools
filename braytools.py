@@ -211,3 +211,46 @@ def dupes(df):
     dupeDf['Num Potential'] = [len(i) for i in dupeDf['Potential Dupes']]
     dupeDf = dupeDf.loc[dupeDf['Num Potential']>1].drop_duplicates(subset=['Potential Dupes']).drop(columns=['Num Potential','Name'])
     return dupeDf
+
+
+def retentionRate(df,yearCol,contactIdCol):
+    '''Calculates 1- and 2-year Donor Retention Rates'''
+    donors = df.groupby(yearCol).agg({contactIdCol:set}).reset_index()
+
+    newDonors = []
+    for i,c in zip(donors.index,donors[contactIdCol]):
+        if donors.loc[i,yearCol]!=min(donors[yearCol]):
+            prevYr = donors.iloc[i-1,1]
+            newDonors.append(list(filter(lambda v: v not in prevYr, c)))
+        else:
+            newDonors.append([])
+    donors['New Donors'] = newDonors
+
+    retained_1 = []
+    for i,c in zip(donors.index,donors['New Donors']):
+        if donors.loc[i,yearCol]!=max(donors[yearCol]):
+            nextYr = donors.iloc[i+1,1]
+            retained_1.append(list(filter(lambda v: v in nextYr, c)))
+        else:
+            retained_1.append([])
+    donors['Retained_1'] = retained_1
+
+    retained_2 = []
+    for i,c in zip(donors.index,donors['Retained_1']):
+        if donors.loc[i,yearCol] < max(donors[yearCol])-1:
+            nextYr = donors.iloc[i+2,1]
+            retained_2.append(list(filter(lambda v: v in nextYr, c)))
+        else:
+            retained_2.append([])
+    donors['Retained_2'] = retained_2
+
+    donors['Total Donors'] = [len(i) for i in donors[contactIdCol]]
+    donors['Total New Donors'] = [len(i) for i in donors['New Donors']]
+    donors['Percent New'] = donors['Total New Donors'] / donors['Total Donors']
+    donors['Donors Retained_1'] = [len(i) for i in donors['Retained_1']]
+    donors['Donors Retained_2'] = [len(i) for i in donors['Retained_2']]
+    donors['1-year Overall Donor Retention Rate'] = donors['Donors Retained_1']/donors['Total Donors']
+    donors['1-year New Donor Retention Rate'] = donors['Donors Retained_1']/donors['Total New Donors']
+    donors['2-year New Donor Retention Rate'] = donors['Donors Retained_2']/donors['Total New Donors']
+    
+    return donors
